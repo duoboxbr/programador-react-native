@@ -19,4 +19,9 @@ export default {
     md: '4px',
     lg: '8px',
   },
+  fonts: {
+    regular: 'Roboto-Regular',
+    medium: 'Roboto-Medium',
+    bold: 'Roboto-Bold',
+  },
 };
