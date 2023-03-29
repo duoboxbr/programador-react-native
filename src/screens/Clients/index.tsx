@@ -24,6 +24,8 @@ import {SearchValueValidation} from './components/SearchValueValidation';
 import {searchValueSchema} from './schema';
 import {SearchValueFormData} from './types';
 import {LoadingClients} from './components/LoadingClients';
+import {useNavigation} from '@react-navigation/native';
+import {AppNavigationProps} from '../../routes/types';
 
 export const Clients: React.FC = () => {
   const {apiAuthorization} = useAuth();
@@ -37,6 +39,7 @@ export const Clients: React.FC = () => {
     resolver: zodResolver(searchValueSchema),
     reValidateMode: 'onSubmit',
   });
+  const navigation = useNavigation<AppNavigationProps>();
 
   const handleGetClients = async ({text}: SearchValueFormData) => {
     const type = getType(text);
@@ -52,6 +55,10 @@ export const Clients: React.FC = () => {
       Alert.alert('Erro', 'Não foi possível buscar os dados!');
     }
     setIsLoading(false);
+  };
+
+  const handleOpenClientDetails = (id: string) => {
+    navigation.navigate('ClientDetails', {id});
   };
 
   return (
@@ -85,6 +92,7 @@ export const Clients: React.FC = () => {
               name={item.nome}
               plan={item.plan_nome}
               service={item.tipo_servico}
+              onPress={() => handleOpenClientDetails(item.pl_id)}
             />
           )}
           ItemSeparatorComponent={ItemSeparator}
