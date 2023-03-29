@@ -10,4 +10,5 @@ export type User = {
 export type AuthContextData = {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  apiAuthorization: string;
 };
