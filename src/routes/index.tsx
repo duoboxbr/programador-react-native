@@ -4,12 +4,14 @@ import {useAuth} from '../hooks/Auth';
 
 import {SignIn} from '../screens/SignIn';
 
-import {Clients} from '../screens/Clients';
+import {ClientsStackRoutes} from './app.stack.routes';
 
 const Routes = () => {
   const {user} = useAuth();
   return (
-    <NavigationContainer>{user ? <Clients /> : <SignIn />}</NavigationContainer>
+    <NavigationContainer>
+      {user ? <ClientsStackRoutes /> : <SignIn />}
+    </NavigationContainer>
   );
 };
 
