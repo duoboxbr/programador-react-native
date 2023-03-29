@@ -1,6 +1,9 @@
 import React from 'react';
+import {Alert} from 'react-native';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
+import {useAuth} from '../../hooks/Auth';
+import {signIn} from '../../services/SignIn';
 
 import {signInSchema} from './schema';
 
@@ -25,9 +28,24 @@ export const SignIn: React.FC = () => {
   const {
     control,
     formState: {errors, isLoading},
+    handleSubmit,
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
   });
+
+  const {setUser} = useAuth();
+
+  const handleSignIn = async (form: SignInFormData) => {
+    try {
+      const {data} = await signIn(form);
+      if (data.erro) {
+        throw new Error();
+      }
+      setUser(form);
+    } catch (error) {
+      Alert.alert('Erro ao fazer o login', 'Usuário ou senha inválidos');
+    }
+  };
 
   return (
     <BaseScreen>
@@ -49,7 +67,10 @@ export const SignIn: React.FC = () => {
               secureTextEntry
             />
           </InputContainer>
-          <SignInButton variant="primary" disabled={isLoading}>
+          <SignInButton
+            variant="primary"
+            disabled={isLoading}
+            onPress={handleSubmit(handleSignIn)}>
             <Typographic.Title color="background">Entrar</Typographic.Title>
           </SignInButton>
         </SigInContent>
