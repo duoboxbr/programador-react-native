@@ -1,15 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Alert, ScrollView} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {useAuth} from '../../hooks/Auth';
 
 import {BaseScreen} from '../BaseScreen';
 import {getClientsDetails} from '../../services/getClientDetails';
-
+import {useAuth} from '../../hooks/Auth';
 import {ServiceCard} from '../../components/ServiceCard';
 
-import {ClientDetailsScreenParams} from './types';
 import {ServiceInfo} from '../../services/getClientDetails/types';
+import {AppNavigationProps} from '../../routes/types';
+import {ClientDetailsScreenParams} from './types';
 
 export const ClientDetails: React.FC = () => {
   const {
@@ -17,7 +17,7 @@ export const ClientDetails: React.FC = () => {
   } = useRoute<ClientDetailsScreenParams>();
   const [services, setServices] = useState<ServiceInfo[]>([]);
   const {apiAuthorization} = useAuth();
-  const navigation = useNavigation();
+  const navigation = useNavigation<AppNavigationProps>();
 
   const fetchClientDetails = useCallback(async () => {
     try {
@@ -31,7 +31,9 @@ export const ClientDetails: React.FC = () => {
     }
   }, [apiAuthorization, id, navigation]);
 
-  const handleNavigateBankSlip = () => {};
+  const handleNavigateBankSlip = () => {
+    navigation.navigate('BankSlips', {id});
+  };
 
   useEffect(() => {
     fetchClientDetails();
