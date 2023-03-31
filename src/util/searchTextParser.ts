@@ -1,25 +1,24 @@
-export const getType = (searchText: string | undefined) => {
+type TypeKey = 'cpf' | 'cnpj' | 'email' | null;
+
+const REGEX_TYPES: Record<string, TypeKey> = {
+  '^\\d{11}$': 'cpf',
+  '^\\d{14}$': 'cnpj',
+  '^[^s@]+@[^s@]+.[^s@]+$': 'email',
+};
+
+export const getType = (searchText: string | undefined): TypeKey => {
   if (!searchText) {
     return null;
   }
 
-  const cleanedText = searchText.replace(/[^a-zA-Z0-9]/g, '');
-
+  const cleanedText = searchText.replace(/[^a-zA-Z0-9@]/g, '');
   if (cleanedText.length === 0) {
     return null;
   }
 
-  if (/^\d{11}$/.test(cleanedText)) {
-    return 'cpf';
-  }
+  const matchedRegex = Object.keys(REGEX_TYPES).find(regex =>
+    new RegExp(regex).test(cleanedText),
+  );
 
-  if (/^\d{14}$/.test(cleanedText)) {
-    return 'cnpj';
-  }
-
-  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(searchText)) {
-    return 'email';
-  }
-
-  return null;
+  return matchedRegex ? REGEX_TYPES[matchedRegex] : null;
 };
