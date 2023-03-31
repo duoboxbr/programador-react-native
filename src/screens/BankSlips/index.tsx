@@ -50,7 +50,7 @@ export const BankSlips: React.FC = () => {
   }, [fetchBankSlips]);
 
   return (
-    <BaseScreen>
+    <BaseScreen edges={[]}>
       <ScrollView showsHorizontalScrollIndicator={false}>
         <TableHeader>
           <Typographic.Text>Status</Typographic.Text>

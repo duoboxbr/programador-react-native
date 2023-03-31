@@ -40,7 +40,7 @@ export const ClientDetails: React.FC = () => {
   }, [fetchClientDetails]);
 
   return (
-    <BaseScreen>
+    <BaseScreen edges={[]}>
       <ScrollView showsHorizontalScrollIndicator={false}>
         {services.map(({clientes}) => (
           <ServiceCard

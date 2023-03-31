@@ -1,3 +1,3 @@
-import {PropsWithChildren} from 'react';
+import {SafeAreaViewProps} from 'react-native-safe-area-context';
 
-export interface BaseScreenProps extends PropsWithChildren {}
+export type BaseScreenProps = SafeAreaViewProps;
