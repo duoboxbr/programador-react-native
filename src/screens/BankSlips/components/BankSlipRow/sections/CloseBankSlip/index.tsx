@@ -1,9 +1,12 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
+import {Alert} from 'react-native';
 import {Button} from '../../../../../../components/Button';
 import {Input} from '../../../../../../components/Input';
 import {Typographic} from '../../../../../../components/Typographic';
+import {useAuth} from '../../../../../../hooks/Auth';
+import {useBankSlipActions} from '../../../../../../hooks/BankSlipsActions';
 import {
   ButtonContainer,
   Container,
@@ -19,12 +22,30 @@ export const CloseBankSlip = () => {
     control,
     formState: {errors},
     handleSubmit,
+    reset,
   } = useForm<CloseBankSlipSchemaFormData>({
     resolver: zodResolver(closeBankSlipSchema),
     reValidateMode: 'onSubmit',
   });
+  const {closeBankSlip} = useBankSlipActions();
+  const {apiAuthorization} = useAuth();
 
-  const handleCloseBankSlip = (data: CloseBankSlipSchemaFormData) => {};
+  const handleCloseBankSlip = async (data: CloseBankSlipSchemaFormData) => {
+    try {
+      const {erro} = await closeBankSlip(apiAuthorization, data);
+      if (erro !== 0) {
+        throw 'Error';
+      }
+      Alert.alert('Resultado', 'Boleto liquidado com sucesso', [
+        {
+          text: 'Ok',
+          onPress: () => reset(),
+        },
+      ]);
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível liquidar o boleto');
+    }
+  };
 
   return (
     <Container>

@@ -1,9 +1,12 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
+import {Alert} from 'react-native';
 import {Button} from '../../../../../../components/Button';
 import {Input} from '../../../../../../components/Input';
 import {Typographic} from '../../../../../../components/Typographic';
+import {useAuth} from '../../../../../../hooks/Auth';
+import {useBankSlipActions} from '../../../../../../hooks/BankSlipsActions';
 import {
   Container,
   Form,
@@ -19,12 +22,32 @@ export const SendBankSlipByEmail = () => {
     control,
     formState: {errors},
     handleSubmit,
+    reset,
   } = useForm<SendBankSlipSchemaFormData>({
     resolver: zodResolver(sendBankSlipSchema),
     reValidateMode: 'onSubmit',
   });
+  const {sendByEmailBankSlip} = useBankSlipActions();
+  const {apiAuthorization} = useAuth();
 
-  const handleSendBankSlipByEmail = (data: SendBankSlipSchemaFormData) => {};
+  const handleSendBankSlipByEmail = async (
+    data: SendBankSlipSchemaFormData,
+  ) => {
+    try {
+      const {erro} = await sendByEmailBankSlip(apiAuthorization, data);
+      if (erro !== 0) {
+        throw 'Erro';
+      }
+      Alert.alert('Resultado', 'E-mail enviado com sucesso', [
+        {
+          text: 'Ok',
+          onPress: () => reset(),
+        },
+      ]);
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível enviar o e-mail');
+    }
+  };
 
   return (
     <Container>

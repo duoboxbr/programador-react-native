@@ -1,9 +1,12 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
+import {Alert} from 'react-native';
 import {Button} from '../../../../../../components/Button';
 import {Input} from '../../../../../../components/Input';
 import {Typographic} from '../../../../../../components/Typographic';
+import {useAuth} from '../../../../../../hooks/Auth';
+import {useBankSlipActions} from '../../../../../../hooks/BankSlipsActions';
 import {
   ButtonContainer,
   Container,
@@ -20,12 +23,29 @@ export const CancelBankSlip = () => {
     control,
     formState: {errors},
     handleSubmit,
+    reset,
   } = useForm<CancelBankSlipSchemaFormData>({
     resolver: zodResolver(cancelBankSlipSchema),
     reValidateMode: 'onSubmit',
   });
+  const {cancelBankSlip} = useBankSlipActions();
+  const {apiAuthorization} = useAuth();
 
-  const handleCancelBankSlip = (data: CancelBankSlipSchemaFormData) => {};
+  const handleCancelBankSlip = async ({
+    cancelMessage,
+  }: CancelBankSlipSchemaFormData) => {
+    try {
+      const {msg} = await cancelBankSlip(apiAuthorization, {cancelMessage});
+      Alert.alert('Resultado', msg, [
+        {
+          text: 'Ok',
+          onPress: () => reset(),
+        },
+      ]);
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível fazer o cancelamento');
+    }
+  };
 
   return (
     <Container>

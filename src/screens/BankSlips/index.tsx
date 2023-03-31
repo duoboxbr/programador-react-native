@@ -13,6 +13,7 @@ import {TableHeader} from './styles';
 import {BankSlip} from '../../services/getBankSlips/types';
 import {BankSlipsScreenParams} from './types';
 import {BankSlipRow} from './components/BankSlipRow';
+import {useBankSlipActions} from '../../hooks/BankSlipsActions';
 
 export const BankSlips: React.FC = () => {
   const {
@@ -22,6 +23,7 @@ export const BankSlips: React.FC = () => {
   const {apiAuthorization} = useAuth();
   const navigation = useNavigation();
   const [selectedBankSlipId, setSelectedBankSlipId] = useState('');
+  const {setBankSlipId} = useBankSlipActions();
 
   const fetchBankSlips = useCallback(async () => {
     try {
@@ -40,6 +42,7 @@ export const BankSlips: React.FC = () => {
     setSelectedBankSlipId(prevSelectedId =>
       prevSelectedId === bankSlipId ? '' : bankSlipId,
     );
+    setBankSlipId(bankSlipId);
   };
 
   useEffect(() => {
