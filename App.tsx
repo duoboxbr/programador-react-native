@@ -2,6 +2,7 @@ import React from 'react';
 
 import {ThemeProvider} from 'styled-components';
 
+import {BankSlipActionsProvider} from './src/hooks/BankSlipsActions';
 import {AuthProvider} from './src/hooks/Auth';
 import {Routes} from './src/routes';
 
@@ -11,7 +12,9 @@ const App = (): JSX.Element => {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <Routes />
+        <BankSlipActionsProvider>
+          <Routes />
+        </BankSlipActionsProvider>
       </AuthProvider>
     </ThemeProvider>
   );
