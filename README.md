@@ -49,8 +49,8 @@ Este projeto foi desenvolvido como parte de um teste prático para a vaga de pro
 #### Clone the repository
 
 ```bash
-git clone https://github.com/rafinhaa/programador-react-native
-cd programador-react-native
+git clone https://github.com/rafinhaa/duobox-challenge
+cd duobox-challenge
 ```
 
 #### Install dependencies
